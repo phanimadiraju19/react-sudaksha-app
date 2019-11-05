@@ -1,0 +1,12 @@
+.app-header{
+    background-color:black;
+    height: 36px;
+    padding: 8px 32px 8px 16px;
+}
+.login-btn{
+    float:right;
+}
+.app-logo {  
+    height: 40px;
+ }
+ 
