@@ -20,6 +20,11 @@ import Modal from 'react-modal';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import logo from '../../assets/logo.svg';
+//import accountCircle from '../../assets/icon/accountCircle.svg';
+//import { SvgIcon } from '@material-ui/core';
+//import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+
 
 const customStyles = {
     content: {
@@ -145,8 +150,9 @@ class Login extends Component {
                   <img src={logo} className="app-logo" alt="logo"></img>
                     <div className="login-button">
                         <Button variant="contained" color="default" onClick={this.openModalHandler}>
-                            Login
+                        Login
                         </Button>
+                       
                     </div>
                   </header>  
                     <Modal
