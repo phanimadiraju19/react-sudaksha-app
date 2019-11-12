@@ -23,6 +23,11 @@ import logo from '../../assets/icon/logo.svg';
 import accountCircle from '../../assets/icon/accountCircle.svg';
 //import { SvgIcon } from '@material-ui/core';
 //import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Grid from '@material-ui/core/Grid';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import CourseCard from "./CourseCard";
+import { withStyles } from "@material-ui/core/styles";
 
 
 
@@ -44,6 +49,29 @@ const TabContainer = function (props) {
         </Typography>
     )
 }
+
+// inline styles for Material-UI components
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    backgroundColor: theme.palette.background.paper,
+    
+  },
+    grow: {
+        flexGrow: 1,
+    },
+    input: {
+        display: 'none',
+    },
+    gridListMain: {
+        transform: 'translateZ(0)',
+        cursor: 'pointer',
+        margin: "15px !important"
+    },
+});
 
 TabContainer.propTypes = {
     children: PropTypes.node.isRequired
@@ -142,15 +170,18 @@ class Login extends Component {
     inputContactChangeHandler = (e) => {
         this.setState({ contact: e.target.value });
     }
-
+    courseCardClickHandler = (courseId) => {
+        this.props.history.push('/course/' + courseId);
+      }
     render() {
+        const { classes } = this.props;
         return (
             <div>
                 <header className="app-header">
                   <img src={logo} className="app-logo" alt="logo"></img>
                     <div className="login-button">
-                        <Button variant="contained" color="default" onClick={this.openModalHandler}>
-                        Login
+                    <Button variant="contained" color="default" onClick={this.openModalHandler}>
+                    <img src={accountCircle} className="accountCircle-logo" alt="accountCircle" /> Login
                         </Button>
                        
                     </div>
@@ -235,9 +266,24 @@ class Login extends Component {
                         </TabContainer>
                     }
                 </Modal>
+                <div className="course-cards-main-container">
+            <GridList cellHeight ={400} className={classes.gridListMain} cols={4}>
+              {this.state.courseInfo.map(course => (
+                <GridListTile key={"course" + course.id} onClick={() => this.courseCardClickHandler(course.id)} >
+                  <Grid container className={classes.root} >
+                    <Grid item>
+                      <CourseCard
+                        course={course}
+                      />
+                    </Grid>
+                  </Grid>
+                </GridListTile>
+              ))};
+            </GridList>
+          </div>
             </div>
         )
 
     }
 }
-export default Login;
+export default withStyles(styles)(Login);
