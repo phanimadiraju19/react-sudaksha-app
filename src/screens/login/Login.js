@@ -19,8 +19,8 @@ import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import logo from '../../assets/logo.svg';
-//import accountCircle from '../../assets/icon/accountCircle.svg';
+import logo from '../../assets/icon/logo.svg';
+import accountCircle from '../../assets/icon/accountCircle.svg';
 //import { SvgIcon } from '@material-ui/core';
 //import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
