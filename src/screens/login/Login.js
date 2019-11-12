@@ -1,289 +1,97 @@
 import React, { Component } from 'react';
-//import ReactDOM from 'react-dom';
-//import Header from '../../common/header/Header';
-//import Card from '@material-ui/core/Card';
-//import { CardContent,
- // import   Typography from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import 'typeface-roboto';
+import './Login.css';
+import Header from '../../common/header/Header';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
-//import Home from '../../screens/home/Home';
-import './Login.css';
-//import Select from '@material-ui/core/Select';
-//import MenuItem from '@material-ui/core/MenuItem';
-import PropTypes from 'prop-types';
-import Modal from 'react-modal';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import logo from '../../assets/icon/logo.svg';
-import accountCircle from '../../assets/icon/accountCircle.svg';
-//import { SvgIcon } from '@material-ui/core';
-//import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import CourseCard from "./CourseCard";
-import { withStyles } from "@material-ui/core/styles";
 
-
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
-    }
-};
-
-const TabContainer = function (props) {
-    return (
-        <Typography component="div" style={{ padding: 0, textAlign: 'center' }}>
-            {props.children}
-        </Typography>
-    )
-}
-
-// inline styles for Material-UI components
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    backgroundColor: theme.palette.background.paper,
-    
-  },
-    grow: {
-        flexGrow: 1,
-    },
-    input: {
-        display: 'none',
-    },
-    gridListMain: {
-        transform: 'translateZ(0)',
-        cursor: 'pointer',
-        margin: "15px !important"
-    },
-});
-
-TabContainer.propTypes = {
-    children: PropTypes.node.isRequired
-}
+/*Class component Login defined with constructor & it's states */
 
 class Login extends Component {
 
     constructor() {
         super();
         this.state = {
-            modalIsOpen: false,
-            value: 0,
+            anchorEl: null,
+            usernamePasswordIncorrect: "dispNone",
             usernameRequired: "dispNone",
+            passwordRequired: "dispNone",
             username: "",
-            loginPasswordRequired: "dispNone",
-            loginPassword: "",
-            firstnameRequired: "dispNone",
-            firstname: "",
-            lastnameRequired: "dispNone",
-            lastname: "",
-            emailRequired: "dispNone",
-            email: "",
-            registerPasswordRequired: "dispNone",
-            registerPassword: "",
-            contactRequired: "dispNone",
-            contact: ""
+            password: "",
+            loggedIn: sessionStorage.getItem("access-token") == null ? false : true
         }
     }
 
-    openModalHandler = () => {
-        this.setState({
-            modalIsOpen: true,
-            value: 0,
-            usernameRequired: "dispNone",
-            username: "",
-            loginPasswordRequired: "dispNone",
-            loginPassword: "",
-            firstnameRequired: "dispNone",
-            firstname: "",
-            lastnameRequired: "dispNone",
-            lastname: "",
-            emailRequired: "dispNone",
-            email: "",
-            registerPasswordRequired: "dispNone",
-            registerPassword: "",
-            contactRequired: "dispNone",
-            contact: ""
-        });
-    }
-
-    closeModalHandler = () => {
-        this.setState({ modalIsOpen: false });
-    }
-
-    tabChangeHandler = (event, value) => {
-        this.setState({ value });
-    }
+    /* Event  Handler Functions Definitions */
 
     loginClickHandler = () => {
+
+        let mockUsernameInstagram = "admin";
+        let mockPasswordInstagram = "admin";
+        let accessToken = "13521022383.d5e23ae.c9785a17269b494eb996c2cbc490a6f3";
+
+        if (this.state.username === mockUsernameInstagram && this.state.password === mockPasswordInstagram) {
+            window.sessionStorage.setItem("access-token", accessToken);
+            /*this is the history object where the push method available in the history object is used 
+             to redirecting the user to the Home page when a user logins successfully.*/
+            this.props.history.push('/home/');
+
+        }
+
         this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
-        this.state.loginPassword === "" ? this.setState({ loginPasswordRequired: "dispBlock" }) : this.setState({ loginPasswordRequired: "dispNone" });
+        this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
+
+        (this.state.username !== "") & (this.state.password !== "") & (this.state.username !== mockUsernameInstagram || this.state.password !== mockPasswordInstagram) ? this.setState({ usernamePasswordIncorrect: "dispBlock" }) : this.setState({ usernamePasswordIncorrect: "dispNone" });
+
     }
 
     inputUsernameChangeHandler = (e) => {
-        this.setState({ username: e.target.value });
+        this.setState({ username: e.target.value })
     }
 
-    inputLoginPasswordChangeHandler = (e) => {
-        this.setState({ loginPassword: e.target.value });
+    inputPasswordChangeHandler = (e) => {
+        this.setState({ password: e.target.value });
     }
 
-    registerClickHandler = () => {
-        this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
-        this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
-        this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
-        this.state.registerPassword === "" ? this.setState({ registerPasswordRequired: "dispBlock" }) : this.setState({ registerPasswordRequired: "dispNone" });
-        this.state.contact === "" ? this.setState({ contactRequired: "dispBlock" }) : this.setState({ contactRequired: "dispNone" });
-    }
+    /* Rendering JSX elements on the Login Page as per the design requirements */
 
-    inputFirstNameChangeHandler = (e) => {
-        this.setState({ firstname: e.target.value });
-    }
-
-    inputLastNameChangeHandler = (e) => {
-        this.setState({ lastname: e.target.value });
-    }
-
-    inputEmailChangeHandler = (e) => {
-        this.setState({ email: e.target.value });
-    }
-
-    inputRegisterPasswordChangeHandler = (e) => {
-        this.setState({ registerPassword: e.target.value });
-    }
-
-    inputContactChangeHandler = (e) => {
-        this.setState({ contact: e.target.value });
-    }
-    courseCardClickHandler = (courseId) => {
-        this.props.history.push('/course/' + courseId);
-      }
     render() {
-        const { classes } = this.props;
+
         return (
+
             <div>
-                <header className="app-header">
-                  <img src={logo} className="app-logo" alt="logo"></img>
-                    <div className="login-button">
-                    <Button variant="contained" color="default" onClick={this.openModalHandler}>
-                    <img src={accountCircle} className="accountCircle-logo" alt="accountCircle" /> Login
-                        </Button>
-                       
-                    </div>
-                  </header>  
-                    <Modal
-                    ariaHideApp={false}
-                    isOpen={this.state.modalIsOpen}
-                    contentLabel="Login"
-                    onRequestClose={this.closeModalHandler}
-                    style={customStyles}
-                >
-                    <Tabs className="tabs" value={this.state.value} onChange={this.tabChangeHandler}>
-                        <Tab label="Login" />
-                        <Tab label="Register" />
-                    </Tabs>
-                    
-                    {this.state.value === 0 &&
-                        <TabContainer>
+                <Header heading="Sudaksha" />
+
+                <div className="cardStyle">
+                    <Card>
+                        <CardContent>
+                            <Typography variant="title">LOGIN</Typography>
                             <FormControl required>
                                 <InputLabel htmlFor="username">Username</InputLabel>
                                 <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
-                                <FormHelperText className={this.state.usernameRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
+                                <FormHelperText className={this.state.usernameRequired}><span className="red">required</span></FormHelperText>
                             </FormControl>
-                            <br /><br />
+                            <br />
                             <FormControl required>
-                                <InputLabel htmlFor="loginPassword">Password</InputLabel>
-                                <Input id="loginPassword" type="password" loginpassword={this.state.loginPassword} onChange={this.inputLoginPasswordChangeHandler} />
-                                <FormHelperText className={this.state.loginPasswordRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
+                                <InputLabel htmlFor="password">Password</InputLabel>
+                                <Input id="password" type="password" password={this.state.password} onChange={this.inputPasswordChangeHandler} />
+                                <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
+                                <br />
+                                <FormHelperText className={this.state.usernamePasswordIncorrect}><span className="red">Incorrect username and/or password</span></FormHelperText>
                             </FormControl>
                             <br /><br />
                             <Button variant="contained" color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
-                        </TabContainer>
-                    }
-
-                    {this.state.value === 1 &&
-                        <TabContainer>
-                            <FormControl required>
-                                <InputLabel htmlFor="firstname">First Name</InputLabel>
-                                <Input id="firstname" type="text" firstname={this.state.firstname} onChange={this.inputFirstNameChangeHandler} />
-                                <FormHelperText className={this.state.firstnameRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
-                            </FormControl>
-                            <br /><br />
-                            <FormControl required>
-                                <InputLabel htmlFor="lastname">Last Name</InputLabel>
-                                <Input id="lastname" type="text" lastname={this.state.lastname} onChange={this.inputLastNameChangeHandler} />
-                                <FormHelperText className={this.state.lastnameRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
-                            </FormControl>
-                            <br /><br />
-                            <FormControl required>
-                                <InputLabel htmlFor="email">Email</InputLabel>
-                                <Input id="email" type="text" email={this.state.email} onChange={this.inputEmailChangeHandler} />
-                                <FormHelperText className={this.state.emailRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
-                            </FormControl>
-                            <br /><br />
-                            <FormControl required>
-                                <InputLabel htmlFor="registerPassword">Password</InputLabel>
-                                <Input id="registerPassword" type="password" registerpassword={this.state.registerPassword} onChange={this.inputRegisterPasswordChangeHandler} />
-                                <FormHelperText className={this.state.registerPasswordRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
-                            </FormControl>
-                            <br /><br />
-                            <FormControl required>
-                                <InputLabel htmlFor="contact">Contact No.</InputLabel>
-                                <Input id="contact" type="text" contact={this.state.contact} onChange={this.inputContactChangeHandler} />
-                                <FormHelperText className={this.state.contactRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
-                            </FormControl>
-                            <br /><br />
-                            <Button variant="contained" color="primary" onClick={this.registerClickHandler}>REGISTER</Button>
-                        </TabContainer>
-                    }
-                </Modal>
-                <div className="course-cards-main-container">
-            <GridList cellHeight ={400} className={classes.gridListMain} cols={4}>
-              {this.state.courseInfo.map(course => (
-                <GridListTile key={"course" + course.id} onClick={() => this.courseCardClickHandler(course.id)} >
-                  <Grid container className={classes.root} >
-                    <Grid item>
-                      <CourseCard
-                        course={course}
-                      />
-                    </Grid>
-                  </Grid>
-                </GridListTile>
-              ))};
-            </GridList>
-          </div>
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         )
-
     }
 }
-export default withStyles(styles)(Login);
+
+export default Login;

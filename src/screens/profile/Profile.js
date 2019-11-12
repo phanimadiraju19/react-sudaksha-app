@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../../common/header/Header';
 import Card from '@material-ui/core/Card';
-import { CardContent} from '@material-ui/core';
+import { CardContent } from '@material-ui/core';
 import 'typeface-roboto';
 
 class Home extends Component{
@@ -19,7 +19,7 @@ class Home extends Component{
 
                     </CardContent>
                 </Card>
-                test Home Page 
+                test Profile Page 
             </div>
             </div>
             
